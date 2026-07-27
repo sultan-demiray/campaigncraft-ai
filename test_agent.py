@@ -7,8 +7,7 @@ def main() -> None:
         brand_name="AINNOVA",
         vertical="Sağlık ve Tıp Teknolojileri",
         brief=(
-            "Yapay zekânın sağlık alanındaki karar destek "
-            "süreçlerine katkısını anlatan bir LinkedIn gönderisi hazırla."
+            "Yapay zekânın sağlık alanındaki karar destek süreçlerine katkısını anlatan bir LinkedIn gönderisi hazırla."
         ),
         platform="linkedin",
         language="tr",
