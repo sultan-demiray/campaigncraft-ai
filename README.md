@@ -1,6 +1,6 @@
-# Ainnova AI Marketing Agent
+# CampaignCraft — AI İçerik Üretim Sistemi
 
-Ainnova AI Marketing Agent, Google Gemini API kullanarak farklı dijital platformlar için yapılandırılmış pazarlama içerikleri üreten bağımsız bir Python projesidir.
+CampaignCraft, Google Gemini API kullanarak farklı dijital platformlar için yapılandırılmış pazarlama içerikleri üreten bir Python projesidir.
 
 Proje; marka adı, sektör, içerik brief'i, platform, dil, ton ve hedef kitle bilgilerini kullanarak Gemini modeline istek gönderir. Dönen yanıt Pydantic ile doğrulanır ve standart bir agent yanıt yapısına dönüştürülür.
 
@@ -20,7 +20,7 @@ Proje; marka adı, sektör, içerik brief'i, platform, dil, ton ve hedef kitle b
 ## Proje Yapısı
 
 ```text
-Ainnova-agent/
+campaigncraft-ai/
 ├── agent_service/
 │   ├── __init__.py
 │   ├── gemini_client.py
@@ -45,7 +45,7 @@ Ainnova-agent/
 
 ### 1. Sanal ortam oluşturma
 
-Windows PowerShell üzerinde:
+Windows PowerShell üzerinde aşağıdaki komutları sırasıyla çalıştırın:
 
 ```powershell
 python -m venv venv
@@ -61,7 +61,7 @@ pip install -r requirements.txt
 
 ### 3. Gemini API anahtarını tanımlama
 
-Proje kökünde `.env` adında bir dosya oluşturun:
+Proje kökünde `.env` adında bir dosya oluşturun ve API anahtarınızı ekleyin:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
@@ -100,9 +100,8 @@ Agent aşağıdaki bilgileri kabul eder:
 ```python
 from agent_service.schemas import ContentGenerationRequest
 
-
 request = ContentGenerationRequest(
-    brand_name="AINNOVA",
+    brand_name="Demo Marka",
     vertical="Sağlık ve Tıp Teknolojileri",
     brief=(
         "Yapay zekânın sağlık alanındaki karar destek "
@@ -166,16 +165,12 @@ Başarılı bir istekte agent aşağıdaki bilgileri döndürür:
 }
 ```
 
+Token değerleri örnek olarak verilmiştir; gerçek kullanımda API yanıtına göre değişir.
+
 ## İçerik Üretim Akışı
 
-```text
-ContentGenerationRequest
-        ↓
-Prompt oluşturma
-        ↓
-Gemini API isteği
-        ↓
-Pydantic ile yanıt doğrulama
-        ↓
-AgentResponse
-```
+1. `ContentGenerationRequest` ile istek oluşturulur.
+2. İstek bilgilerine göre prompt hazırlanır.
+3. Gemini API'ye istek gönderilir.
+4. Dönen yanıt Pydantic ile doğrulanır.
+5. Sonuç, standart `AgentResponse` yapısında döndürülür.
