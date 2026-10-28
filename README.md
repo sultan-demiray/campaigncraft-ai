@@ -1,6 +1,6 @@
-# Ainnova AI Marketing Agent
+# CampaignCraft — AI İçerik Üretim Sistemi
 
-Ainnova AI Marketing Agent, Google Gemini API tabanlı çok aşamalı bir dijital pazarlama içerik üretim sistemidir.
+CampaignCraft, Google Gemini API tabanlı çok aşamalı bir dijital pazarlama içerik üretim sistemidir.
 
 Agent Core; kullanıcı isteğini analiz eder, yapılandırılmış bir kampanya planı oluşturur, plana uygun içerik üretir, üretilen içeriği marka ve güvenlik kurallarına göre inceler ve gerekli olduğunda içeriği bir kez otomatik olarak revize eder.
 
@@ -41,7 +41,7 @@ Agent Core; kullanıcı isteğini analiz eder, yapılandırılmış bir kampanya
 ## Proje Yapısı
 
 ```text
-Ainnova-agent/
+campaigncraft-ai/
 ├── agent_service/
 │   ├── agents/
 │   │   ├── __init__.py
@@ -68,37 +68,15 @@ Ainnova-agent/
 
 Agent Core, içerik üretimini tek bir model çağrısıyla gerçekleştirmek yerine farklı sorumluluklara sahip bileşenler üzerinden yürütür.
 
-Normal Agent akışı:
+Normal akış:
 
-```text
-ContentGenerationRequest
-        ↓
-Campaign Planner Agent
-        ↓
-Content Generator
-        ↓
-Brand Reviewer Agent
-        ↓
-AgentResponse
-```
+1. `ContentGenerationRequest` alınır.
+2. Campaign Planner Agent kampanya planını oluşturur.
+3. Content Generator içeriği üretir.
+4. Brand Reviewer Agent içeriği inceler.
+5. Sonuç `AgentResponse` olarak döndürülür.
 
-Reviewer içeriğin revize edilmesini isterse aşağıdaki akış çalışır:
-
-```text
-Campaign Planner Agent
-        ↓
-Content Generator — attempt 1
-        ↓
-Brand Reviewer Agent — attempt 1
-        ↓
-Content Generator — attempt 2
-        ↓
-Brand Reviewer Agent — attempt 2
-        ↓
-AgentResponse
-```
-
-Agent Core sonsuz revizyon döngüsünü önlemek için en fazla bir otomatik revizyon gerçekleştirir.
+Reviewer revizyon isterse içerik bir kez yeniden üretilir ve ikinci kez incelenir. Agent Core, sonsuz revizyon döngüsünü önlemek için en fazla bir otomatik revizyon gerçekleştirir.
 
 ## Campaign Planner Agent
 
@@ -137,15 +115,15 @@ Kampanya planı şu bilgileri içerir:
 }
 ```
 
-Campaign Planner Agent aşağıdaki kurallara göre çalışır:
+Campaign Planner Agent aşağıdaki kurallara uyması için yönlendirilir:
 
-- Kullanıcı tarafından belirtilmeyen ürün veya hizmetleri oluşturmaz.
-- Uydurma istatistik, başarı oranı veya akademik kaynak eklemez.
-- Var olmayan web sitesi, demo veya teknik dokümana yönlendirme yapmaz.
-- Doğrulanmamış iletişim veya sosyal medya hesabı kullanmaz.
-- Hassas alanlarda kesin sonuç veya garanti vadetmez.
-- Doğrulanmış ölçüm veya kaynak bulunmadığında ölçülü ifadeler kullanır.
-- Yapay zekâyı insan uzmanlığının yerine geçen bir sistem olarak konumlandırmaz.
+- Kullanıcı tarafından belirtilmeyen ürün veya hizmetleri oluşturmamak
+- Uydurma istatistik, başarı oranı veya akademik kaynak eklememek
+- Var olmayan web sitesi, demo veya teknik dokümana yönlendirme yapmamak
+- Doğrulanmamış iletişim veya sosyal medya hesabı kullanmamak
+- Hassas alanlarda kesin sonuç veya garanti vadetmemek
+- Doğrulanmış ölçüm veya kaynak bulunmadığında ölçülü ifadeler kullanmak
+- Yapay zekâyı insan uzmanlığının yerine geçen bir sistem olarak konumlandırmamak
 
 ## Content Generator
 
@@ -159,6 +137,8 @@ Content Generator, kullanıcı isteğine ve Campaign Planner tarafından hazırl
 - `hashtags`: İçerikle ilgili hashtag listesi
 - `warnings`: Kaynak, doğrulama veya insan kontrolü gerektiren uyarılar
 
+Aşağıdaki örnekte `DemoMarka`, temsili bir marka adıdır.
+
 Örnek içerik çıktısı:
 
 ```json
@@ -167,7 +147,7 @@ Content Generator, kullanıcı isteğine ve Campaign Planner tarafından hazırl
   "body": "Yapay zekâ tabanlı sistemler, klinik karar süreçlerinde hekimlere yardımcı bir değerlendirme perspektifi sunabilir.",
   "cta": "Konu hakkındaki görüşlerinizi yorumlarda paylaşabilirsiniz.",
   "hashtags": [
-    "AINNOVA",
+    "DemoMarka",
     "YapayZeka",
     "DijitalSağlık",
     "KlinikKararDestek"
@@ -178,16 +158,16 @@ Content Generator, kullanıcı isteğine ve Campaign Planner tarafından hazırl
 }
 ```
 
-Content Generator aşağıdaki güvenlik ve kalite kurallarına göre çalışır:
+Content Generator aşağıdaki güvenlik ve kalite kurallarına uyması için yönlendirilir:
 
-- Kullanıcı briefinde bulunmayan ürün, hizmet veya özellikleri uydurmaz.
-- Uydurma istatistik, akademik kaynak veya bağlantı oluşturmaz.
-- Kesin başarı, doğruluk, hız veya verimlilik iddiası kullanmaz.
-- Sağlık, hukuk ve finans gibi hassas alanlarda garanti vermez.
-- Doğrulanmamış iletişim kanallarına yönlendirme yapmaz.
-- Kullanıcı tarafından belirtilmeyen demo, doküman veya web sayfası oluşturmaz.
-- Yapay zekâyı insan uzmanlığının alternatifi olarak göstermez.
-- Kaynak veya insan kontrolü gerektiren durumları `warnings` alanında belirtir.
+- Kullanıcı briefinde bulunmayan ürün, hizmet veya özellikleri uydurmamak
+- Uydurma istatistik, akademik kaynak veya bağlantı oluşturmamak
+- Kesin başarı, doğruluk, hız veya verimlilik iddiası kullanmamak
+- Sağlık, hukuk ve finans gibi hassas alanlarda garanti vermemek
+- Doğrulanmamış iletişim kanallarına yönlendirme yapmamak
+- Kullanıcı tarafından belirtilmeyen demo, doküman veya web sayfası oluşturmamak
+- Yapay zekâyı insan uzmanlığının alternatifi olarak göstermemek
+- Kaynak veya insan kontrolü gerektiren durumları `warnings` alanında belirtmek
 
 ## Brand Reviewer Agent
 
@@ -224,7 +204,7 @@ Reviewer çıktısı:
 
 Alanların anlamları:
 
-- `approved`: İçeriğin kullanılabilir durumda olup olmadığını belirtir.
+- `approved`: İçeriğin inceleme sonucunda uygun bulunup bulunmadığını belirtir.
 - `requires_revision`: İçeriğin yeniden düzenlenmesi gerekip gerekmediğini belirtir.
 - `feedback`: İçeriği geliştirmek için uygulanabilir öneriler içerir.
 - `warnings`: Kaynak, mevzuat, etik veya insan kontrolü gerektiren riskleri içerir.
@@ -250,13 +230,13 @@ Bu durumda Agent Orchestrator:
 4. Revize edilen içeriği Brand Reviewer Agent’a tekrar gönderir.
 5. İkinci incelemeden sonra nihai sonucu oluşturur.
 
-Revizyon sırasında:
+Revizyon sırasında aşağıdaki kuralların uygulanması hedeflenir:
 
-- Kampanya planındaki temel mesajlar korunur.
-- Riskli veya aşırı kesin ifadeler ölçülü hâle getirilir.
-- Kullanıcı briefinde bulunmayan yeni ürün, hizmet, kaynak veya bağlantı eklenmez.
-- İç sistem uyarıları içerik gövdesine veya CTA metnine taşınmaz.
-- Briefin kapsamını gereksiz şekilde genişletecek öneriler uygulanmaz.
+- Kampanya planındaki temel mesajların korunması
+- Riskli veya aşırı kesin ifadelerin ölçülü hâle getirilmesi
+- Kullanıcı briefinde bulunmayan yeni ürün, hizmet, kaynak veya bağlantı eklenmemesi
+- İç sistem uyarılarının içerik gövdesine veya CTA metnine taşınmaması
+- Briefin kapsamını gereksiz şekilde genişletecek önerilerin uygulanmaması
 
 Başarılı bir revizyon akışında adımlar şu sırada oluşur:
 
@@ -270,7 +250,7 @@ brand_reviewer — attempt 2
 
 ## Agent Orchestrator
 
-`AgentOrchestrator`, bütün Agent bileşenlerinin çalışma sırasını yöneten ana sınıftır.
+`AgentOrchestrator`, bütün agent bileşenlerinin çalışma sırasını yöneten ana sınıftır.
 
 Başlıca görevleri:
 
@@ -351,7 +331,7 @@ Agent çalışması sırasında oluşan kontrollü hataları ortak bir yapıda s
 
 ### AgentResponse
 
-Bütün Agent çalışmasının nihai sonucunu temsil eder.
+Bütün agent çalışmasının nihai sonucunu temsil eder.
 
 Örnek:
 
@@ -391,7 +371,7 @@ Bütün Agent çalışmasının nihai sonucunu temsil eder.
         "body": "Üretilen içerik metni",
         "cta": "Görüşlerinizi yorumlarda paylaşabilirsiniz.",
         "hashtags": [
-          "AINNOVA",
+          "DemoMarka",
           "YapayZeka"
         ],
         "warnings": []
@@ -427,14 +407,18 @@ Bütün Agent çalışmasının nihai sonucunu temsil eder.
 }
 ```
 
+Örnekteki token değerleri temsilidir; gerçek kullanımda API yanıtına göre değişir.
+
 ## Token Kullanım Takibi
 
-Her Gemini çağrısında şu bilgiler kaydedilir:
+Her Gemini çağrısında şu bilgiler alınır:
 
 - Input token miktarı
 - Output token miktarı
 
-Bütün Agent çağrılarının toplam token kullanımı nihai `AgentResponse.usage` alanında döndürülür.
+Bütün agent çağrılarının toplam token kullanımı nihai `AgentResponse.usage` alanında döndürülür.
+
+Örnek:
 
 ```json
 {
@@ -450,9 +434,9 @@ Agent bileşenlerinde kontrollü hata yönetimi uygulanmıştır.
 Sistem:
 
 - Geçici Gemini API hatalarında isteği yeniden deneyebilir.
-- Başarısız Agent adımını `failed` olarak işaretler.
+- Başarısız agent adımını `failed` olarak işaretler.
 - Hata bilgisini `AgentError` yapısında saklar.
-- Tamamlanan Agent adımlarını kaydeder.
+- Tamamlanan agent adımlarını kaydeder.
 - Token kullanımını başarılı çağrılar üzerinden toplar.
 - Nihai sonucu ortak `AgentResponse` yapısıyla döndürür.
 
@@ -472,13 +456,13 @@ Agent promptları aşağıdaki riskleri azaltacak şekilde hazırlanmıştır:
 - Briefte bulunmayan yeni iddiaları Reviewer geri bildirimi olarak önerme
 - Sonsuz otomatik revizyon döngüsü oluşturma
 
-Sağlık, hukuk, finans ve regülasyon gibi hassas alanlarda üretilen içerikler yayınlanmadan önce insan ve alan uzmanı kontrolünden geçirilmelidir.
+Bu kurallar model çıktılarının doğruluğunu garanti etmez. Sağlık, hukuk, finans ve regülasyon gibi hassas alanlarda üretilen içerikler yayınlanmadan önce insan ve alan uzmanı kontrolünden geçirilmelidir.
 
 ## Kurulum
 
 ### 1. Sanal ortam oluşturma
 
-Windows PowerShell üzerinde:
+Windows PowerShell üzerinde aşağıdaki komutları sırasıyla çalıştırın:
 
 ```powershell
 python -m venv venv
@@ -509,7 +493,7 @@ GEMINI_MODEL=gemini-3.1-flash-lite
 python test_agent.py
 ```
 
-Content Generator bileşenini bağımsız olarak çalıştırır ve yapılandırılmış içerik çıktısının oluşturulduğunu doğrular.
+Content Generator bileşenini bağımsız olarak çalıştırır ve yapılandırılmış içerik çıktısının oluşturulduğunu kontrol eder.
 
 Başarılı sonuçta:
 
@@ -528,7 +512,7 @@ dönmesi beklenir.
 python test_planner.py
 ```
 
-Campaign Planner Agent’ın kullanıcı isteğine göre yapılandırılmış bir kampanya planı oluşturduğunu doğrular.
+Campaign Planner Agent’ın kullanıcı isteğine göre yapılandırılmış bir kampanya planı oluşturduğunu kontrol eder.
 
 Başarılı sonuçta:
 
@@ -551,7 +535,7 @@ dönmesi beklenir.
 python test_reviewer.py
 ```
 
-Brand Reviewer Agent’ın üretilen içeriği inceleyerek yapılandırılmış bir `ReviewResult` oluşturduğunu doğrular.
+Brand Reviewer Agent’ın üretilen içeriği inceleyerek yapılandırılmış bir `ReviewResult` oluşturduğunu kontrol eder.
 
 Başarılı sonuçta:
 
@@ -567,25 +551,15 @@ Başarılı sonuçta:
 
 benzeri bir sonuç dönmesi beklenir.
 
-### Normal Agent akışı testi
+### Normal agent akışı testi
 
 ```powershell
 python test_agent_flow.py
 ```
 
-Şu akışı çalıştırır:
+Kampanya planlama, içerik üretimi ve marka incelemesi adımlarını sırasıyla çalıştırır.
 
-```text
-Campaign Planner
-        ↓
-Content Generator
-        ↓
-Brand Reviewer
-        ↓
-AgentResponse
-```
-
-Beklenen Agent adımları:
+Beklenen agent adımları:
 
 ```text
 campaign_planner — attempt 1
@@ -610,25 +584,11 @@ dönmesi beklenir.
 python test_revision_flow.py
 ```
 
-İlk Brand Reviewer sonucunu kontrollü biçimde revizyon gerektirir hâle getirerek Agent Orchestrator’ın revizyon dalını doğrular.
+İlk Brand Reviewer sonucunu kontrollü biçimde revizyon gerektirir hâle getirerek Agent Orchestrator’ın revizyon dalını kontrol eder.
 
-Test sırasında şu akış çalıştırılır:
+Test, ilk üretim ve inceleme adımlarından sonra içeriğin bir kez revize edilmesini ve tekrar incelenmesini sağlar.
 
-```text
-Campaign Planner
-        ↓
-Content Generator — attempt 1
-        ↓
-Brand Reviewer — attempt 1
-        ↓
-Content Generator — attempt 2
-        ↓
-Brand Reviewer — attempt 2
-        ↓
-AgentResponse
-```
-
-Beklenen Agent adımları:
+Beklenen agent adımları:
 
 ```text
 campaign_planner — attempt 1
